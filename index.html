@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive Compiler Design Lab — Intermediate Code Generator">
+  <title>Intermediate Code Generator (Three Address Code)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="glow glow-one"></div><div class="glow glow-two"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Intermediate Code Generator home">
+      <span class="brand-symbol" aria-hidden="true"><span class="brand-bracket">&lt;</span><span class="brand-ir">IR</span><span class="brand-bracket">/&gt;</span></span>
+      <span class="brand-copy"><strong>ICG Studio</strong><small>Compiler Design Lab</small></span>
+    </a>
+    <div class="topnav">
+      <span class="live-pill"><i></i> Interactive Analysis</span>
+      <button class="nav-btn" id="aboutBtn">About Project</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="kicker"><span>CD LAB</span><em>INTERMEDIATE CODE GENERATOR · TAC</em></div>
+        <h1>Transform source code into<br><span>Three Address Code.</span></h1>
+        <p>A focused visual workspace for exploring how a C-like source program moves through lexical analysis, symbols and intermediate representations.</p>
+        <div class="hero-actions">
+          <button class="hero-primary" id="heroRun"><span>▶</span> Start with Demo</button>
+          <button class="hero-secondary" id="heroScroll">Explore workspace <span>↓</span></button>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <svg class="circuit-map" viewBox="0 0 720 440" preserveAspectRatio="none">
+          <path class="circuit-line" d="M30 80H150L205 135H290L350 75H475L525 125H680"/>
+          <path class="circuit-line" d="M40 350H150L220 280H305L360 335H485L555 265H690"/>
+          <path class="circuit-line hot" d="M90 220H180L235 165H320L390 235H485L545 175H640"/>
+          <path class="circuit-line" d="M165 20V92M350 75V25M525 125V58M220 280V395M485 335V405M555 265V210"/>
+          <circle class="circuit-node pulse" cx="90" cy="220" r="5"/><circle class="circuit-node b pulse2" cx="180" cy="220" r="5"/>
+          <circle class="circuit-node v pulse" cx="320" cy="165" r="5"/><circle class="circuit-node pulse2" cx="485" cy="235" r="5"/>
+          <circle class="circuit-node b pulse" cx="640" cy="175" r="5"/><circle class="circuit-node v pulse2" cx="150" cy="350" r="5"/>
+          <circle class="circuit-node pulse" cx="690" cy="350" r="5"/>
+        </svg>
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        <div class="ir-card">
+          <div class="ir-top"><span class="ir-dot red"></span><span class="ir-dot yellow"></span><span class="ir-dot green"></span><span class="ir-title">intermediate.ir</span></div>
+          <div class="ir-code"><p><b>01</b><span class="kw">t1</span> <i>=</i> <span class="num">b</span> <i>*</i> <span class="num">2</span></p><p><b>02</b><span class="kw">t2</span> <i>=</i> <span class="num">a</span> <i>+</i> <span class="kw">t1</span></p><p><b>03</b><span class="kw">c</span> <i>=</i> <span class="kw">t2</span></p><p><b>04</b><span class="kw">t3</span> <i>=</i> <span class="num">c</span> <i>-</i> <span class="num">3</span></p></div>
+          <div class="ir-foot"><span>THREE ADDRESS CODE</span><strong>✓ GENERATED</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pipeline" id="workspace">
+      <div class="section-heading"><div><span class="section-label">WORKFLOW</span><h2>One source. Five compiler views.</h2></div><p>Enter your program once, then inspect each intermediate stage.</p></div>
+      <div class="steps">
+        <div class="step active"><span>01</span><b>Source</b><small>User input</small></div><div class="step-line"></div>
+        <div class="step"><span>02</span><b>Tokens</b><small>Lexical units</small></div><div class="step-line"></div>
+        <div class="step"><span>03</span><b>Symbols</b><small>Declarations</small></div><div class="step-line"></div>
+        <div class="step"><span>04</span><b>TAC</b><small>Three address</small></div><div class="step-line"></div>
+        <div class="step"><span>05</span><b>IR Tables</b><small>Quad / Triple</small></div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <article class="editor-panel panel">
+        <div class="panel-header">
+          <div class="panel-title"><span class="number-badge">01</span><div><h2>Source Program</h2><p>Write or paste your C-like source here.</p></div></div>
+          <span class="language-tag"><i></i> C-LIKE</span>
+        </div>
+        <div class="editor-shell">
+          <div class="editor-toolbar"><span>main.c</span><span id="charCount">0 chars</span></div>
+          <div class="editor-wrap"><div class="line-numbers" id="lineNumbers">1</div><textarea id="sourceCode" spellcheck="false" aria-label="Source program"></textarea></div>
+        </div>
+        <div class="editor-actions"><button class="tool-btn" id="demoBtn">↻ Load Demo</button><button class="tool-btn" id="clearBtn">⌫ Clear</button><button class="generate-btn" id="runBtn"><span>Generate Intermediate Code</span><b>↗</b></button></div>
+        <div class="support-note"><span>i</span><p><b>Supported syntax:</b> integer declarations, assignments, arithmetic operators, parentheses and relational operators.</p></div>
+      </article>
+
+      <article class="output-panel panel">
+        <div class="panel-header output-header">
+          <div class="panel-title"><span class="number-badge violet">02</span><div><h2>Intermediate Representation</h2><p id="resultMessage">Run the source program to populate the analysis.</p></div></div>
+          <div class="metrics"><div><strong id="tokenCount">0</strong><small>Tokens</small></div><div><strong id="symbolCount">0</strong><small>Symbols</small></div><div><strong id="tacCount">0</strong><small>TAC lines</small></div></div>
+        </div>
+        <nav class="tabs" role="tablist">
+          <button class="tab active" data-tab="overview">Overview</button><button class="tab" data-tab="tokens">Tokens</button><button class="tab" data-tab="symbols">Symbol Table</button><button class="tab" data-tab="tac">Three Address Code</button><button class="tab" data-tab="quad">Quadruples</button><button class="tab" data-tab="triples">Triples</button>
+        </nav>
+        <div id="tabContent" class="tab-content"></div>
+      </article>
+    </section>
+
+    <section class="features">
+      <div class="section-heading compact"><div><span class="section-label">COMPILER DESIGN LAB</span><h2>Visualize every stage of intermediate code generation.</h2></div></div>
+      <div class="feature-grid">
+        <div class="feature"><div class="feature-icon cyan">⌁</div><div><h3>Lexical Analysis</h3><p>Splits source into meaningful tokens such as keywords, identifiers, operators and delimiters.</p></div><span>01</span></div>
+        <div class="feature"><div class="feature-icon purple">Σ</div><div><h3>Symbol Table</h3><p>Tracks declared identifiers and their basic type and scope information.</p></div><span>02</span></div>
+        <div class="feature"><div class="feature-icon blue">≡</div><div><h3>Intermediate Code</h3><p>Transforms expressions into TAC and equivalent quadruple and triple forms.</p></div><span>03</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer><div><span class="footer-mark">&lt;IR/&gt;</span><b>Intermediate Code Generator (Three Address Code)</b></div><span>Compiler Design Lab · Academic Project</span><span>Interactive Compiler Analysis</span></footer>
+
+  <div class="modal hidden" id="aboutModal"><div class="modal-box"><button class="close" id="closeModal">×</button><span class="section-label">ABOUT THE PROJECT</span><h2>Intermediate Code Generator (Three Address Code)</h2><p>This Compiler Design Lab project demonstrates how a source program can be transformed into an intermediate representation before the later stages of code generation. The user enters a C-like program, and the application presents the important intermediate-analysis results in a clear, visual sequence.</p><p>The workflow begins with <b>lexical analysis</b>, where the source is broken into tokens such as keywords, identifiers, constants, operators, and separators. The identified identifiers and their basic information are organized in a <b>symbol table</b>. The system then generates <b>Three Address Code (TAC)</b>, an intermediate representation in which complex expressions are divided into simple instructions using temporary variables. The same TAC is also represented as <b>quadruples</b> and <b>triples</b> to show different ways of storing intermediate instructions.</p><div class="about-grid"><div><b>Source Program</b><span>User-entered C-like statements</span></div><div><b>Lexical Analysis</b><span>Tokens and token categories</span></div><div><b>Symbol Table</b><span>Identifiers and associated information</span></div><div><b>Intermediate Code</b><span>TAC, quadruples and triples</span></div></div><div class="modal-note"><b>Academic purpose:</b> The project provides a visual and interactive way to understand the intermediate-code generation concepts studied in Compiler Design, from source statements to structured intermediate instructions.</div></div></div>
+  <script src="app.js"></script>
+</body>
+</html>
